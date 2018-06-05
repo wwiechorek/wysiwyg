@@ -1,13 +1,18 @@
-<div
-   id='editor'
-   style="border: 1px solid; height: 200px;">
-      <a href='dsadas'>dsadas</a>
-      <img src='https://marketingdeconteudo.com/wp-content/uploads/2017/01/formatos-de-imagem-2.jpg' />
-</div>
+<link rel="stylesheet" href='style.css'>
 
-<button onClick='insertImage()'>Insert image</button>
-<button onClick='h1()'>H1</button>
-<button onClick='bold()'>bold</button>
+<main>
+
+      <button onClick="edit.command('h1')">H1</button>
+      <button onClick="edit.command('h2')">H2</button>
+      <button onClick="edit.command('bold')">B</button>
+      <button onClick="edit.command('italic')">I</button>
+      <button onClick='insertImage()'>Insert image</button>
+      
+      <div
+      id='editor'>
+            Diserte sua ideia aqui
+      </div>
+</main>
 
    
 <script src='4w.js'></script>
@@ -40,12 +45,5 @@
    function insertImage() {
          var image = edit.command('insertImage', 'https://marketingdeconteudo.com/wp-content/uploads/2017/01/formatos-de-imagem-2.jpg');
          console.log(image)
-   }
-
-   function h1() {
-         edit.command('h1')
-   }
-   function bold() {
-         edit.command('bold')
    }
 </script>

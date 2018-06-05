@@ -78,6 +78,7 @@ function w4( selector ) {
             while (el.hasChildNodes()) {
                   parent.insertBefore(el.firstChild, el);
             }
+
             parent.removeChild(el);
       }
 
@@ -120,7 +121,8 @@ function w4( selector ) {
    function ExecCommand(command, data) {
       if(command === 'h1' || command === 'h2' || command === 'h3' || command === 'h4' || command === 'h5' || command === 'h6') {
             if(properties[command]) {
-                  removeSelectedElements(command);      
+                  // document.execCommand('formatBlock', false, '<p>') melhor usar o fallback de baixo                     
+                  removeSelectedElements(command);   
             } else {     
                   document.execCommand('formatBlock', false, '<'+command+'>')
             }

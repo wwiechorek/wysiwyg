@@ -1,0 +1,23 @@
+#editor {
+      border: 0;
+      outline: none;
+      height: auto;
+      min-height: 300px;
+      margin-top: 30px;
+
+      font: 400 1rem/1.7 Arial,Helvetica,Sans-serif;
+      color: #494949;
+      letter-spacing: -0.47px;
+      margin: 25px 0;
+}
+
+img {
+      max-width: 100%;
+}
+
+main {
+      float: none;
+      margin: 0 auto;
+      display: table;
+      width: 640px;
+}
