@@ -1,0 +1,51 @@
+<div
+   id='editor'
+   style="border: 1px solid; height: 200px;">
+      <a href='dsadas'>dsadas</a>
+      <img src='https://marketingdeconteudo.com/wp-content/uploads/2017/01/formatos-de-imagem-2.jpg' />
+</div>
+
+<button onClick='insertImage()'>Insert image</button>
+<button onClick='h1()'>H1</button>
+<button onClick='bold()'>bold</button>
+
+   
+<script src='4w.js'></script>
+<script>
+   var edit = new w4('#editor')
+   edit.listener('hasProperty', function( property ) {
+      console.log('has ' + property)
+   })
+
+   edit.listener('removedProperty', function( property ) {
+      console.log('Without ' + property)
+   })
+
+   edit.listener('change', function( content ) {
+      console.log(content)
+   })
+
+   edit.listener('focus', function() {
+         console.log('focus')
+   })
+
+   edit.listener('blur', function() {
+         console.log('lostFocus')
+   })
+
+   edit.listener('imageRemoved', function( img ) {
+         console.log('Imagem removida')
+   })
+
+   function insertImage() {
+         var image = edit.command('insertImage', 'https://marketingdeconteudo.com/wp-content/uploads/2017/01/formatos-de-imagem-2.jpg');
+         console.log(image)
+   }
+
+   function h1() {
+         edit.command('h1')
+   }
+   function bold() {
+         edit.command('bold')
+   }
+</script>
