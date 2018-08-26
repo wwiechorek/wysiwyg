@@ -79,6 +79,7 @@ function w4( selector ) {
                   parent.insertBefore(el.firstChild, el);
             }
 
+            if(parent)
             parent.removeChild(el);
       }
 
@@ -111,7 +112,8 @@ function w4( selector ) {
       'h3' : false,
       'h4' : false,
       'h5' : false,
-      'h6' : false
+      'h6' : false,
+      'blockquote': false
    }
 
    function setFocus() {
@@ -119,7 +121,8 @@ function w4( selector ) {
    }
 
    function ExecCommand(command, data) {
-      if(command === 'h1' || command === 'h2' || command === 'h3' || command === 'h4' || command === 'h5' || command === 'h6') {
+      if(command === 'h1' || command === 'h2' || command === 'h3' || command === 'h4' || command === 'h5' || command === 'h6' || command === 'blockquote') {
+            removeSelectedElements("p");   
             if(properties[command]) {
                   // document.execCommand('formatBlock', false, '<p>') melhor usar o fallback de baixo                     
                   removeSelectedElements(command);   
@@ -194,24 +197,26 @@ function w4( selector ) {
       ExecCommand(command)
    }
    
-   function verfifyProperty( property ) {
-   
+   function verifyProperties( property ) {
+      
       var range = document.getSelection().getRangeAt(0);
       var container = range.commonAncestorContainer;
       if (container.nodeType == 3) {container = container.parentNode;}
       
+      
+      
       if(property === 'link') {
-         if(container.nodeName === "A") {
-            return true
-         }
+            if(container.nodeName === "A") {
+                  return true
+            }
       }
+      
+      //fix is tag is blockquote - removido a tag P antesx`
+      // if(container.parentNode !== 'p') {
+      //       container = container.parentNode            
+      // }
 
-      if(property === 'h1' && container.nodeName === "H1") return true
-      if(property === 'h2' && container.nodeName === "H2") return true
-      if(property === 'h3' && container.nodeName === "H3") return true
-      if(property === 'h4' && container.nodeName === "H4") return true
-      if(property === 'h5' && container.nodeName === "H5") return true
-      if(property === 'h6' && container.nodeName === "H6") return true
+      if(property === container.nodeName.toLowerCase()) return true
    
       if(document.queryCommandState(property)) {
          return true
@@ -229,7 +234,7 @@ function w4( selector ) {
          for (let index = 0; index < items.length; index++) {
             const element = items[index]
 
-            var has = verfifyProperty(element)
+            var has = verifyProperties(element)
             if(has !== properties[element]) {
                properties[element] = has
 
