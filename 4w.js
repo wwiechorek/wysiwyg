@@ -180,7 +180,7 @@ function w4( selector ) {
       event.preventDefault()
       event.stopPropagation()
    
-      ExecCommand('insertText', bufferText);
+      ExecCommand('insertText', outputText);
    }
    
    function hotKeyCtrl( event, keyCode ) {
