@@ -113,7 +113,8 @@ function w4( selector ) {
       'h4' : false,
       'h5' : false,
       'h6' : false,
-      'blockquote': false
+      'blockquote': false,
+      'code': false
    }
 
    function setFocus() {
@@ -121,11 +122,12 @@ function w4( selector ) {
    }
 
    function ExecCommand(command, data) {
+
       if(command === 'h1' || command === 'h2' || command === 'h3' || command === 'h4' || command === 'h5' || command === 'h6' || command === 'blockquote') {
             removeSelectedElements("p");   
             if(properties[command]) {
                   if(command === 'blockquote') {
-                        removeSelectedElements(command);   
+                        removeSelectedElements(command);
                   } else {
                         document.execCommand('formatBlock', false, '<p>') //o de cima pode servir como fallback                     
                   }
@@ -133,6 +135,14 @@ function w4( selector ) {
                   document.execCommand('formatBlock', false, '<'+command+'>')
             }
             setFocus()            
+      } else if(command === 'code') {
+            if(properties[command]) {
+                  removeSelectedElements(command);
+            } else {
+                  if(window.getSelection().toString() !== "") {
+                        document.execCommand("insertHTML", false, "<"+command+">"+document.getSelection()+"</"+command+">");
+                  }
+            }
       }
 
       document.execCommand(command, false, data)
