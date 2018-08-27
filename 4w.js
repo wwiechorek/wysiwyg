@@ -124,8 +124,11 @@ function w4( selector ) {
       if(command === 'h1' || command === 'h2' || command === 'h3' || command === 'h4' || command === 'h5' || command === 'h6' || command === 'blockquote') {
             removeSelectedElements("p");   
             if(properties[command]) {
-                  // document.execCommand('formatBlock', false, '<p>') melhor usar o fallback de baixo                     
-                  removeSelectedElements(command);   
+                  if(command === 'blockquote') {
+                        removeSelectedElements(command);   
+                  } else {
+                        document.execCommand('formatBlock', false, '<p>') //o de cima pode servir como fallback                     
+                  }
             } else {     
                   document.execCommand('formatBlock', false, '<'+command+'>')
             }
@@ -197,6 +200,7 @@ function w4( selector ) {
       ExecCommand(command)
    }
    
+   //to-do verificar todos os pontos de nodo
    function verifyProperties( property ) {
       
       var range = document.getSelection().getRangeAt(0);
@@ -210,11 +214,6 @@ function w4( selector ) {
                   return true
             }
       }
-      
-      //fix is tag is blockquote - removido a tag P antesx`
-      // if(container.parentNode !== 'p') {
-      //       container = container.parentNode            
-      // }
 
       if(property === container.nodeName.toLowerCase()) return true
    
