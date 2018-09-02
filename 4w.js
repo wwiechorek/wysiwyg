@@ -62,6 +62,20 @@ function w4( selector ) {
             return rangeNodes;
       }
 
+      function nextNode(node) {
+            if (node.hasChildNodes()) {
+                return node.firstChild;
+            } else {
+                while (node && !node.nextSibling) {
+                    node = node.parentNode;
+                }
+                if (!node) {
+                    return null;
+                }
+                return node.nextSibling;
+            }
+      }
+
       function getSelectedNodes() {
             var nodes = [];
             if (window.getSelection) {
@@ -74,6 +88,7 @@ function w4( selector ) {
       }
 
       function replaceWithOwnChildren(el) {
+            console.log(el)
             var parent = el.parentNode;
             while (el.hasChildNodes()) {
                   parent.insertBefore(el.firstChild, el);
@@ -83,17 +98,25 @@ function w4( selector ) {
             parent.removeChild(el);
       }
 
-      function removeSelectedElements(tagNames) {
-            var tagNamesArray = tagNames.toLowerCase().split(",");
-            getSelectedNodes().forEach(function(node) {
-                  if (node.nodeType == 1 &&
-                  tagNamesArray.indexOf(node.tagName.toLowerCase()) > -1) {
-                        // Remove the node and replace it with its children
-                        replaceWithOwnChildren(node);
-                  }
-            });
+      function verifySelectedNode(tagName) {
+            var array = getSelectedNodes()
+            for (let i = 0; i < array.length; i++) {
+                const node = array[i];
+                if (node.nodeType == 1 && node.tagName.toLowerCase() === tagName) {
+                    return node
+                }   
+            }
       }
       
+
+      function removeSelectedElements(tagName) {
+            var node = verifySelectedNode(tagName)
+            if(node) {
+                  replaceWithOwnChildren(node)
+            }
+      }
+
+
 /*third-party*/
 
    var listeners = {}
@@ -124,13 +147,8 @@ function w4( selector ) {
    function ExecCommand(command, data) {
 
       if(command === 'h1' || command === 'h2' || command === 'h3' || command === 'h4' || command === 'h5' || command === 'h6' || command === 'blockquote') {
-            removeSelectedElements("p");   
             if(properties[command]) {
-                  if(command === 'blockquote') {
-                        removeSelectedElements(command);
-                  } else {
-                        document.execCommand('formatBlock', false, '<p>') //o de cima pode servir como fallback                     
-                  }
+                  removeSelectedElements(command);
             } else {     
                   document.execCommand('formatBlock', false, '<'+command+'>')
             }
@@ -148,20 +166,6 @@ function w4( selector ) {
       document.execCommand(command, false, data)
       setFocus()
    }
-
-   function nextNode(node) {
-      if (node.hasChildNodes()) {
-          return node.firstChild;
-      } else {
-          while (node && !node.nextSibling) {
-              node = node.parentNode;
-          }
-          if (!node) {
-              return null;
-          }
-          return node.nextSibling;
-      }
-  }
    
    function handleKeyDown(e) {
       var ctrl = e.ctrlKey || e.metaKey
@@ -210,28 +214,8 @@ function w4( selector ) {
       ExecCommand(command)
    }
    
-   //to-do verificar todos os pontos de nodo
    function verifyProperties( property ) {
-      
-      var range = document.getSelection().getRangeAt(0);
-      var container = range.commonAncestorContainer;
-      if (container.nodeType == 3) {container = container.parentNode;}
-      
-      
-      
-      if(property === 'link') {
-            if(container.nodeName === "A") {
-                  return true
-            }
-      }
-
-      if(property === container.nodeName.toLowerCase()) return true
-   
-      if(document.queryCommandState(property)) {
-         return true
-      }
-
-      return false
+      return verifySelectedNode(property)
    }
    
    function readProperties() {
