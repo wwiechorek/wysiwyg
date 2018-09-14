@@ -9,6 +9,10 @@
       color: #494949;
       letter-spacing: -0.47px;
       margin: 25px 0;
+      
+      /* ajustes na fonte */
+      text-rendering:optimizeLegibility;
+      -webkit-font-smoothing:antialiased;
 }
 
 img {
